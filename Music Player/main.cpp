@@ -10,6 +10,7 @@
 int main(int argc, const char * argv[]) {
     songs obj;
     obj.song_read_from_file();
-    //obj.display_all_songs();
+    obj.display_all_songs();
+    obj.
     return 0;
 }

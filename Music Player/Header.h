@@ -10,6 +10,7 @@
 #define Header_h
 #include <fstream>
 #include<string>
+#include "searching.h"
 #include<iostream>
 using namespace std;
 //MRU
@@ -20,7 +21,8 @@ struct song {
     string artistname;
     bool love;
     struct song *prev,*next;
-    song(string name,string artist){
+    song(string name,string artist,int idd){
+        this->songid=idd;
         this->name=name;
         this->artistname=artist;
         this->prev=NULL;
@@ -31,17 +33,25 @@ struct song {
  |song name*artist name|
  */
 
+
+
 class songs{
     private:
         struct song *head,*tail;
         struct song *songshash[50]={NULL};
         int counterforkey=-1;
+   
     public:
+     make_search_easy search_song,search_artist;
         songs(){
             tail=head=NULL;
         }
         void insert(string name,string artist){
-            struct song *t=new song(name,artist);
+            struct song *t=new song(name,artist,counterforkey++);
+            
+            //name artist here is the time to put it into tries;
+            search_song.insert(name,counterforkey-1);
+            
             if(head==NULL){
                 head=t;
                 tail=t;
