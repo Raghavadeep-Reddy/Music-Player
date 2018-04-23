@@ -6,10 +6,10 @@
 //  Copyright © 2018 Navroop Singh Bajwa. All rights reserved.
 //
 
-#include <iostream>
-
+#include "Header.h"
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+    songs obj;
+    obj.song_read_from_file();
+    //obj.display_all_songs();
     return 0;
 }
