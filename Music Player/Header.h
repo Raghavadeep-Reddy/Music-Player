@@ -47,11 +47,11 @@ class songs{
             tail=head=NULL;
         }
         void insert(string name,string artist){
-            struct song *t=new song(name,artist,counterforkey++);
+            struct song *t=new song(name,artist,++counterforkey);
             
             //name artist here is the time to put it into tries;
-            search_song.insert(name,counterforkey-1);
-            
+            search_song.insert(name,counterforkey);
+            search_artist.insert(artist, counterforkey);
             if(head==NULL){
                 head=t;
                 tail=t;
@@ -71,7 +71,7 @@ class songs{
             cout<<"No";
         }
         file.close();
-        cout<<"S"<<sentences<<endl;
+        //cout<<"S"<<sentences<<endl;
         int len=(int)sentences.length();
         if(len>0){
             int i=1;
@@ -91,18 +91,32 @@ class songs{
         }
     }
     
-    void display_all_songs(){
+    
+    
+    void display(int songid){
         song *temp=head;
         while(temp){
-            cout<<temp->name<<" By "<<temp->artistname<<endl;
+            if(temp->songid==songid)
+            { cout<<"\'"<<temp->name<<"\'"<<" \t\tBy \'"<<temp->artistname<<"\'"<<endl;return;}
             temp=temp->next;
         }
         cout<<endl;
-        temp=tail;
+    }
+    
+    void display_specific_from_ids(struct ids *head){
+        while(head){
+            display(head->current_id);
+            head=head->next;
+        }
+    }
+    
+    void display_all_songs(){
+        song *temp=head;
         while(temp){
-            cout<<temp->name<<" By "<<temp->artistname<<endl;
-            temp=temp->prev;
-        }        cout<<endl;
+            cout<<"\'"<<temp->name<<"\'"<<" \t\tBy \'"<<temp->artistname<<"\' "<<temp->songid<<endl;
+            temp=temp->next;
+        }
+        cout<<endl;
     }
     
 };

@@ -138,11 +138,13 @@ class make_search_easy{
                     last=temp;
                     temp=temp->next[t[index]-'a'];
                 }
+                //if(temp)return temp->head;
                 return last->head;
             }
         }
         return NULL;
     }
+    
     void display_unique_ids(struct ids *head){
         if(head){
             while(head){
