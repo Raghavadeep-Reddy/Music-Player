@@ -32,9 +32,11 @@ class make_search_easy{
         int count;
         char data;
         struct trie *next[26];
+        struct trie *number[10];
         struct ids *head;
         trie(char t){
-            for(int i=0;i<=26;i++)next[i]=NULL;
+            for(int i=0;i<=26;i++)this->next[i]=NULL;
+            for(int i=0;i<=26;i++)this->number[i]=NULL;
             this->data=t;
             count=1;
             this->head=NULL;
@@ -42,10 +44,10 @@ class make_search_easy{
         
     };
     
-    
+    struct trie *headnumber[10]={NULL};//total=10 heads
     struct trie *head[26]={NULL};//total 26 heads
     public :
-    
+
     struct ids *add_id_for_song(int no,struct ids *head){
         if(head==NULL){
             return new ids (no);
@@ -77,8 +79,13 @@ class make_search_easy{
                     agla=rethead;
                     agla->head=add_id_for_song(song_id, agla->head);// addition for song id
                 }else{
-                    agla->next[t[i]-'a']=new trie(t[i]);
-                    agla=agla->next[t[i]-'a'];
+                    if(t[i]>='a'&&t[i]<='z'){
+                        agla->next[t[i]-'a']=new trie(t[i]);
+                        agla=agla->next[t[i]-'a'];
+                    }else{
+                        agla->number[t[i]-'0']=new trie(t[i]);
+                        agla=agla->number[t[i]-'0'];
+                    }
                     agla->head=add_id_for_song(song_id, agla->head);// addition for song id
                 }
             }
@@ -87,17 +94,34 @@ class make_search_easy{
             //match for same string till we get desired pos to insert and simply increase counter by one when we pass one
             trie *last=head;
             int index=0;
-            while(index<t.length() && head && head->data==t[index++]){
+            while(index<t.length() && head!=NULL && head->data==t[index]){
                 last=head;
                 head->head=add_id_for_song(song_id, head->head);// addition for song id
                 last->count=last->count+1;
-                head=head->next[t[index]-'a'];
+                if(index+1<t.length()){
+                    if(t[index+1]>='a'&&t[index+1]<='z')
+                        head=head->next[t[index+1]-'a'];
+                    else
+                        head=head->number[t[index+1]-'0'];
+                }else break;
+                index++;
             }
             //head=last;
-            string remainingsub=t.substr(index,t.length()-1);
+            string remainingsub=t.substr(index,t.length());
             if(remainingsub.length()>0){
-                if(head)head->next[remainingsub[0]-'a']=perform_insertion(remainingsub, NULL,song_id);
-                else last->next[remainingsub[0]-'a']=perform_insertion(remainingsub, NULL,song_id);
+                if(remainingsub[0]>='a'&&remainingsub[0]<='z'){
+                if(head)
+                    head->next[remainingsub[0]-'a']=perform_insertion(remainingsub, NULL,song_id);
+                else
+                    last->next[remainingsub[0]-'a']=perform_insertion(remainingsub, NULL,song_id);
+                    
+                }
+                else{
+                   if(head)
+                       head->number[remainingsub[0]-'0']=perform_insertion(remainingsub, NULL,song_id);
+                    else
+                        last->number[remainingsub[0]-'0']=perform_insertion(remainingsub, NULL,song_id);
+                }
             }
         }
         return head;
@@ -105,41 +129,86 @@ class make_search_easy{
     
     
     void insertt(string name,int key){
-        if(name.length()>0){
+        if(name.length()>0&&(name[0]>='a'&&name[0]<='z')){
             if(head[name[0]-'a']==NULL){
                 head[name[0]-'a']=perform_insertion(name, head[name[0]-'a'],key);
             }else{
                 perform_insertion(name, head[name[0]-'a'],key);
             }
-        }
-    }
-    
-    void insert(string t,int key){
-        if(t.length()>0){
-            for(int i=0;i<t.length();i++){
-                string tem="";
-                for(int j=i;j<t.length()&&t[i]>='a'&&t[i]<='z';j++,i++){
-                    tem+=t[j];
-                }
-                insertt(tem,key);
+        }else if(name.length()>0&&(name[0]>='1'&&name[0]<='9')){
+            if(headnumber[name[0]-'0']==NULL){
+                headnumber[name[0]-'0']=perform_insertion(name, headnumber[name[0]-'0'],key);
+            }else{
+                perform_insertion(name, headnumber[name[0]-'0'],key);
             }
         }
     }
     
+    void insert(string t,int key){   //to be called for insertion purpose //MAIN INSERT Function
+        if(t.length()>0){
+            string nonspaced="";
+            for(int i=0;i<t.length();i++){
+                if((t[i]>='a'&&t[i]<='z')||(t[i]>='1'&&t[i]<='9'))nonspaced=nonspaced+t[i];
+            }
+            for(int i=0;i<nonspaced.length();i++){
+                //cout<<i<<" "<<nonspaced.substr(i,nonspaced.length())<<endl;
+                insertt(nonspaced.substr(i,nonspaced.length()), key);
+            }
+        }
+    }
+    /*
+     insert new file"
+     newfile
+     ewfile
+     wfile
+     file
+     ile
+     le
+     e
+
+     */
+    string getparsed(string t){
+        string ret="";
+        for(int i=0;i<t.length();i++){
+            if((t[i]>='a'&&t[i]<='z')||(t[i]>='0'&&t[i]<='9'))ret+=t[i];
+        }
+        return ret;
+    }
+    
     struct ids* search_for_this_string(string t){
         if(t.length()>0){
+            
+            t=getparsed(t);
+            
             int index=0;
             // struct ids *rethead=NULL;
             char start=t[0];
-            if(head[start-'a']!=NULL){
+            if(start>='a'&&start<='z'&&head[start-'a']!=NULL){
                 struct trie *temp=head[start-'a'],*last;
                 last=temp;
-                while(index<t.length()&&temp && temp->data==t[index++] ){
+                while(index<t.length()&&temp!=NULL && temp->data==t[index++] ){
                     last=temp;
                     temp=temp->next[t[index]-'a'];
                 }
                 //if(temp)return temp->head;
                 return last->head;
+            }else{
+                if(headnumber[start-'0']!=NULL){
+                    struct trie *temp=headnumber[start-'0'],*last;
+                    last=temp;
+                    while(index<t.length()&&temp!=NULL && temp->data==t[index] ){
+                        last=temp;
+                        if(index+1<t.length()){
+                            if(t[index+1]>='a'&&t[index+1]<='z')
+                                temp=temp->next[t[index+1]-'a'];
+                            else
+                                temp=temp->number[t[index+1]-'0'];
+                        }else break;
+                        index++;
+                    }
+                    if(temp)return temp->head;
+                    return last->head;
+                }
             }
         }
         return NULL;
@@ -165,10 +234,16 @@ class make_search_easy{
                     display_thishead(head->next[i]);
                     cout<<endl;
                 }
+            for(int i=0;i<10;i++)
+                if(head->number[i]!=NULL){
+                    display_thishead(head->number[i]);
+                    cout<<endl;
+                }
         }
     }
     void display(){
         for (int i=0;i<26;i++)display_thishead(head[i]);
+        for(int i=0;i<10;i++)display_thishead(headnumber[i]);
     }
     
 };

@@ -64,7 +64,7 @@ class songs{
     void song_read_from_file(){
         //cout<<"Called";
         string sentences;
-        ifstream file("allsongshere.txt");
+        ifstream file("allsongshere.dat");
         if(file.is_open()){
             getline(file, sentences);
         }else{
@@ -89,6 +89,7 @@ class songs{
                 i++;
             }
         }
+        
     }
     
     

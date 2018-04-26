@@ -13,7 +13,7 @@ int main(int argc, const char * argv[]) {
     obj.display_all_songs();
     
     
-    
+    //obj.search_song.display();
     //obj.search_song.display_unique_ids(obj.search_song.search_for_this_string("geet"));
     //obj.search_artist.display();
     int t;
@@ -26,7 +26,6 @@ int main(int argc, const char * argv[]) {
         string temp;
         cin>>temp;
         if(choice==1){
-            //obj.display(1);
             obj.display_specific_from_ids(obj.search_artist.search_for_this_string(temp));
         }else{
             obj.display_specific_from_ids(obj.search_song.search_for_this_string(temp));
