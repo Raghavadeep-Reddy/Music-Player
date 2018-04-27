@@ -63,32 +63,34 @@ class songs{
         }
     void song_read_from_file(){
         //cout<<"Called";
-        string sentences;
+        string sentences="\0";
         ifstream file("allsongshere.dat");
         if(file.is_open()){
-            getline(file, sentences);
+            while(getline(file, sentences)){
+                int len=(int)sentences.length();
+                if(len>0){
+                    int i=0;
+                    while(i<len&&sentences[i]!='\0'){
+                        string name,artist;
+                        name=artist="";
+                        for(int t=i;t<len&&sentences[t]!='*'&&sentences[t]!='|'&&sentences[i]!='\0';t++,i++){
+                            name=name+sentences[t];
+                        }
+                        i++;
+                        for(int t=i;t<len&&sentences[t]!='*'&&sentences[t]!='|'&&sentences[i]!='\0';t++,i++){
+                            artist=artist+sentences[t];
+                        }
+                        insert(name, artist);
+                        i++;
+                    }
+                }
+            }
         }else{
             cout<<"No";
         }
         file.close();
         //cout<<"S"<<sentences<<endl;
-        int len=(int)sentences.length();
-        if(len>0){
-            int i=1;
-            while(i<len){
-                string name,artist;
-                name=artist="";
-                for(int t=i;t<len&&sentences[t]!='*'&&sentences[t]!='|';t++,i++){
-                    name=name+sentences[t];
-                }
-                i++;
-                for(int t=i;t<len&&sentences[t]!='*'&&sentences[t]!='|';t++,i++){
-                    artist=artist+sentences[t];
-                }
-                insert(name, artist);
-                i++;
-            }
-        }
+        
         
     }
     
@@ -122,8 +124,6 @@ class songs{
     
 };
 
-class playlist{
-    
-};
+
 
 #endif /* Header_h */

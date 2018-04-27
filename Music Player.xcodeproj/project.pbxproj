@@ -14,7 +14,7 @@
 		2E5B1306208B6B9B005D56F8 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
+			dstPath = /usr/share/man/man1;
 			dstSubfolderSpec = 0;
 			files = (
 			);
@@ -25,6 +25,9 @@
 /* Begin PBXFileReference section */
 		2E5B1308208B6B9B005D56F8 /* Music Player */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Music Player"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E5B130B208B6B9B005D56F8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		2E5B1312208B6BAC005D56F8 /* songs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = songs.h; sourceTree = "<group>"; };
+		2E5B1316208C9574005D56F8 /* allsongshere.dat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = allsongshere.dat; sourceTree = "<group>"; };
+		2E5B1317208E7B37005D56F8 /* searching.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = searching.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +60,10 @@
 		2E5B130A208B6B9B005D56F8 /* Music Player */ = {
 			isa = PBXGroup;
 			children = (
+				2E5B1316208C9574005D56F8 /* allsongshere.dat */,
 				2E5B130B208B6B9B005D56F8 /* main.cpp */,
+				2E5B1312208B6BAC005D56F8 /* songs.h */,
+				2E5B1317208E7B37005D56F8 /* searching.h */,
 			);
 			path = "Music Player";
 			sourceTree = "<group>";
@@ -88,6 +94,9 @@
 		2E5B1300208B6B9B005D56F8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					New,
+				);
 				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Navroop Singh Bajwa";
 				TargetAttributes = {

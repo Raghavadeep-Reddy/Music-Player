@@ -6,7 +6,7 @@
 //  Copyright © 2018 Navroop Singh Bajwa. All rights reserved.
 //
 
-#include "Header.h"
+#include "songs.h"
 int main(int argc, const char * argv[]) {
     songs obj;
     obj.song_read_from_file();
