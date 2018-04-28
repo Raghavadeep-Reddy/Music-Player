@@ -14,6 +14,8 @@
 #include<iostream>
 using namespace std;
 //MRU
+
+
 struct song {
     int songid;
     string name;
@@ -48,7 +50,7 @@ class songs{
         }
         void insert(string name,string artist){
             struct song *t=new song(name,artist,++counterforkey);
-            
+            //cout<<"created";
             //name artist here is the time to put it into tries;
             search_song.insert(name,counterforkey);
             search_artist.insert(artist, counterforkey);
@@ -62,13 +64,14 @@ class songs{
             }
         }
     void song_read_from_file(){
-        //cout<<"Called";
+       // cout<<"Called";
         string sentences="\0";
         ifstream file("allsongshere.dat");
         if(file.is_open()){
-            while(getline(file, sentences)){
+            while(getline(file, sentences) && sentences.length()>0){
                 int len=(int)sentences.length();
                 if(len>0){
+                	//cout<<sentences<<endl;
                     int i=0;
                     while(i<len&&sentences[i]!='\0'){
                         string name,artist;
@@ -123,6 +126,8 @@ class songs{
     }
     
 };
+
+
 
 
 
