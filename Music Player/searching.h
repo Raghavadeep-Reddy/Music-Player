@@ -22,6 +22,7 @@ struct ids{
 
 
 
+
 class make_search_easy{
     private :
     
@@ -36,7 +37,7 @@ class make_search_easy{
         struct ids *head;
         trie(char t){
             for(int i=0;i<=26;i++)this->next[i]=NULL;
-            for(int i=0;i<=26;i++)this->number[i]=NULL;
+            for(int i=0;i<=10;i++)this->number[i]=NULL;
             this->data=t;
             count=1;
             this->head=NULL;
@@ -89,6 +90,7 @@ class make_search_easy{
                     agla->head=add_id_for_song(song_id, agla->head);// addition for song id
                 }
             }
+            
             return rethead;
         }else{
             //match for same string till we get desired pos to insert and simply increase counter by one when we pass one
@@ -103,7 +105,7 @@ class make_search_easy{
                         head=head->next[t[index+1]-'a'];
                     else
                         head=head->number[t[index+1]-'0'];
-                }else break;
+                }//else break;
                 index++;
             }
             //head=last;
@@ -152,7 +154,7 @@ class make_search_easy{
             }
             for(int i=0;i<nonspaced.length();i++){
                 //cout<<i<<" "<<nonspaced.substr(i,nonspaced.length())<<endl;
-                insertt(nonspaced.substr(i,nonspaced.length()), key);
+                insertt(nonspaced.substr(i,nonspaced.length()-1), key);
             }
         }
     }
@@ -247,5 +249,6 @@ class make_search_easy{
     }
     
 };
+
 
 #endif /* searching_h */
