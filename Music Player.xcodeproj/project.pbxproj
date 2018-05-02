@@ -23,6 +23,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2E1C8F922099FCD400A3DD6A /* hashing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hashing.h; sourceTree = "<group>"; };
+		2E1C8F932099FD8E00A3DD6A /* playlist.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = playlist.h; sourceTree = "<group>"; };
+		2E4CF36420989CD000D7F3DA /* shuffle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = shuffle.h; sourceTree = "<group>"; };
 		2E5B1308208B6B9B005D56F8 /* Music Player */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Music Player"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E5B130B208B6B9B005D56F8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		2E5B1312208B6BAC005D56F8 /* songs.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = songs.h; sourceTree = "<group>"; };
@@ -60,10 +63,13 @@
 		2E5B130A208B6B9B005D56F8 /* Music Player */ = {
 			isa = PBXGroup;
 			children = (
+				2E4CF36420989CD000D7F3DA /* shuffle.h */,
 				2E5B1316208C9574005D56F8 /* allsongshere.dat */,
 				2E5B130B208B6B9B005D56F8 /* main.cpp */,
 				2E5B1312208B6BAC005D56F8 /* songs.h */,
 				2E5B1317208E7B37005D56F8 /* searching.h */,
+				2E1C8F922099FCD400A3DD6A /* hashing.h */,
+				2E1C8F932099FD8E00A3DD6A /* playlist.h */,
 			);
 			path = "Music Player";
 			sourceTree = "<group>";

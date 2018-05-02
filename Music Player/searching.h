@@ -154,7 +154,7 @@ class make_search_easy{
             }
             for(int i=0;i<nonspaced.length();i++){
                 //cout<<i<<" "<<nonspaced.substr(i,nonspaced.length())<<endl;
-                insertt(nonspaced.substr(i,nonspaced.length()-1), key);
+                insertt(nonspaced.substr(i,nonspaced.length()), key);
             }
         }
     }
@@ -188,11 +188,19 @@ class make_search_easy{
             if(start>='a'&&start<='z'&&head[start-'a']!=NULL){
                 struct trie *temp=head[start-'a'],*last;
                 last=temp;
-                while(index<t.length()&&temp!=NULL && temp->data==t[index++] ){
+                while(index<=t.length()&&temp!=NULL && temp->data==t[index] ){
                     last=temp;
-                    temp=temp->next[t[index]-'a'];
+                    
+                        if(t[index+1]>='a'&&t[index+1]<='z')
+                            temp=temp->next[t[index+1]-'a'];
+                        else if(t[index+1]>='0'&&t[index+1]<='1')
+                            temp=temp->number[t[index+1]-'0'];
+                    
+                    index++;
+                    //temp=temp->next[t[index]-'a'];
                 }
-                //if(temp)return temp->head;
+                cout<<"Showing results for : \""<<t.substr(0,index)<<"\""<<endl;
+                if(temp)return temp->head;
                 return last->head;
             }else{
                 if(headnumber[start-'0']!=NULL){
@@ -200,14 +208,19 @@ class make_search_easy{
                     last=temp;
                     while(index<t.length()&&temp!=NULL && temp->data==t[index] ){
                         last=temp;
-                        if(index+1<t.length()){
-                            if(t[index+1]>='a'&&t[index+1]<='z')
+                        
+                            if(t[index+1]>='a'&&t[index+1]<='z'){
                                 temp=temp->next[t[index+1]-'a'];
-                            else
+                                
+                            }
+                            else if(t[index+1]>='0'&&t[index+1]<='9'){
                                 temp=temp->number[t[index+1]-'0'];
-                        }else break;
+                                //index++;
+                            }
                         index++;
+                        
                     }
+                    cout<<"Showing results for : \""<<t.substr(0,index)<<"\""<<endl;
                     if(temp)return temp->head;
                     return last->head;
                 }
@@ -247,6 +260,67 @@ class make_search_easy{
         for (int i=0;i<26;i++)display_thishead(head[i]);
         for(int i=0;i<10;i++)display_thishead(headnumber[i]);
     }
+    struct ids *delete_this_id_from_list(int unid,struct ids *head){
+        if(head){
+            if(head->current_id==unid)return head->next;
+            else {
+                struct ids *last=head;//start from 2nd position
+                struct ids *rethead=head;
+                head=head->next;
+                while(head){
+                    if(head->current_id==unid){
+                        last->next=head->next;
+                        return rethead;
+                    }
+                    last=head;
+                    head=head->next;
+                }
+                last->next=NULL;
+                return rethead;
+            }
+        }
+        return head;
+    }
+    void delete_this_entry(string t,int uni_id){ //recursion for deletion makes code easy to design
+        if(t.length()>0){
+            char start=t[0];
+            struct trie *headp=NULL;
+            if(start>='a'&&start<='z'){
+                headp=head[start-'a'];
+            }else{
+                headp=headnumber[start-'0'];
+            }
+            headp->count=headp->count-1;
+            struct trie *agla=headp,*last=headp;
+            for(int i=1;i<t.length()&&agla!=NULL;i++){ // deleting from tries
+                agla->count=agla->count-1;
+                if(agla->count==0){
+                    free(agla);
+                    if(t[i-1]>='a'&&t[i-1]<='z'){
+                        last->next[t[i-1]-'a']=NULL;
+                    }else{
+                        last->number[t[i-1]-'0']=NULL;
+                    }
+                }else{
+                    agla->head=delete_this_id_from_list(uni_id, agla->head);
+                }
+                last=agla;
+                if(last){
+                    if(t[i]>='a'&&t[i]<='z')
+                        agla=agla->next[t[i]-'a'];
+                    else
+                        agla=agla->number[t[i]-'0'];
+                }
+            }
+            if(headp->count==0){
+                free(headp);
+                head[start-'a']=NULL; //if start is from a to z
+            }else{
+                headp->head=delete_this_id_from_list(uni_id, headp->head);
+            }
+        }
+    }
+
     
 };
 
