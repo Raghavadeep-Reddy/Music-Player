@@ -48,7 +48,10 @@ class make_search_easy{
     struct trie *headnumber[10]={NULL};//total=10 heads
     struct trie *head[26]={NULL};//total 26 heads
     public :
-
+    bool is_alpha(char t){
+        if(t>='a'&&t<='z')return true;
+        return false;
+    }
     struct ids *add_id_for_song(int no,struct ids *head){
         if(head==NULL){
             return new ids (no);
@@ -261,8 +264,8 @@ class make_search_easy{
         for(int i=0;i<10;i++)display_thishead(headnumber[i]);
     }
     struct ids *delete_this_id_from_list(int unid,struct ids *head){
-        if(head){
-            if(head->current_id==unid)return head->next;
+        if(head!=NULL){
+            if(head->current_id==unid){return head->next;}
             else {
                 struct ids *last=head;//start from 2nd position
                 struct ids *rethead=head;
@@ -275,53 +278,85 @@ class make_search_easy{
                     last=head;
                     head=head->next;
                 }
+                
                 last->next=NULL;
                 return rethead;
             }
         }
-        return head;
+        return NULL;
     }
     void delete_this_entry(string t,int uni_id){ //recursion for deletion makes code easy to design
         if(t.length()>0){
-            char start=t[0];
             struct trie *headp=NULL;
-            if(start>='a'&&start<='z'){
-                headp=head[start-'a'];
-            }else{
-                headp=headnumber[start-'0'];
-            }
-            headp->count=headp->count-1;
-            struct trie *agla=headp,*last=headp;
-            for(int i=1;i<t.length()&&agla!=NULL;i++){ // deleting from tries
-                agla->count=agla->count-1;
-                if(agla->count==0){
-                    free(agla);
-                    if(t[i-1]>='a'&&t[i-1]<='z'){
-                        last->next[t[i-1]-'a']=NULL;
-                    }else{
-                        last->number[t[i-1]-'0']=NULL;
-                    }
-                }else{
-                    agla->head=delete_this_id_from_list(uni_id, agla->head);
-                }
-                last=agla;
-                if(last){
-                    if(t[i]>='a'&&t[i]<='z')
-                        agla=agla->next[t[i]-'a'];
-                    else
-                        agla=agla->number[t[i]-'0'];
-                }
-            }
+            if(is_alpha(t[0]))
+                headp=head[t[0]-'a'];
+            else
+                headp=headnumber[t[0]-'0'];
             if(headp->count==0){
-                free(headp);
-                head[start-'a']=NULL; //if start is from a to z
+                if(is_alpha(t[0]))
+                    head[t[0]-'a']=NULL;
+                else
+                    headnumber[t[0]-'0']=NULL;
+                return ;
             }else{
+                headp->count=headp->count-1;
                 headp->head=delete_this_id_from_list(uni_id, headp->head);
+                int index_start_from=1;
+                struct trie *last=headp;
+                while(headp!=NULL && index_start_from<t.length()){
+                    if(is_alpha(t[index_start_from]))
+                        headp=headp->next[t[index_start_from]-'a'];
+                    else
+                        headp=headp->number[t[index_start_from]-'0'];
+                    if(headp->count==0){
+                        if(is_alpha(t[index_start_from-1]))
+                            last->next[t[index_start_from-1]-'a']=NULL;
+                        else
+                            last->number[t[index_start_from-1]-'0']=NULL;
+                        return;
+                    }else{
+                        headp->count=headp->count-1;
+                        headp->head=delete_this_id_from_list(uni_id, headp->head);
+                    }
+                    last=headp;
+                    index_start_from++;
+                }
             }
         }
     }
-
-    
+    void deletion_process(string name,int uni_id){//main function to be called upon deletion process
+        name=getparsed(name);
+        
+        for(int i=0;i<name.length();i++){
+          delete_this_entry(name.substr(i,name.length()),uni_id);
+        }
+    }
+    void change_id_in_this_list(struct ids *head,int oldid,int newid){
+        while(head){
+            if(head->current_id==oldid){
+                head->current_id=newid;
+                return ;
+            }
+            head=head->next;
+        }
+    }
+    void change_this_id_to(string name,int oldid,int newid){ //for deletion and insertion into vacant places
+        char start=name[0];
+        struct trie *headp=NULL;
+        if(start>='a'&&start<='z')
+            headp=head[start-'a'];
+        else
+            headp=headnumber[start-'0'];
+        change_id_in_this_list(headp->head,oldid,newid);
+        for(int i=1;i<name.length();i++){
+            if(name[i]>='a'&&name[i]<='z')
+                headp=headp->next[name[i]-'a'];
+            else
+                headp=headp->number[name[i]-'0'];
+            if(headp)change_id_in_this_list(headp->head,oldid,newid);
+        }
+        
+    }
 };
 
 

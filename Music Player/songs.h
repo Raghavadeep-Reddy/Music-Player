@@ -11,6 +11,7 @@
 #include <fstream>
 #include<string>
 #include "searching.h"
+#include "playlist.h"
 #include<iostream>
 using namespace std;
 //MRU
@@ -110,7 +111,7 @@ class songs{
     }
     
     void display_specific_from_ids(struct ids *head){
-        while(head){
+        while(head!=NULL){
             display(head->current_id);
             head=head->next;
         }

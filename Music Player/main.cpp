@@ -33,12 +33,12 @@ int main(int argc, const char * argv[]) {
         }else if(choice==3){ //song
             int uni_id;
             cin>>uni_id;
-            obj.search_song.delete_this_entry(temp, uni_id);
+            obj.search_song.deletion_process(temp, uni_id);
             obj.display_specific_from_ids(obj.search_song.search_for_this_string(temp));
         }else{
             int uni_id;
             cin>>uni_id;
-            obj.search_artist.delete_this_entry(temp, uni_id);
+            obj.search_artist.deletion_process(temp, uni_id);
             obj.display_specific_from_ids(obj.search_artist.search_for_this_string(temp));
         }
     }
