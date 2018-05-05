@@ -8,7 +8,8 @@
 
 #ifndef shuffle_h
 #define shuffle_h
-#include<iostream>
+#include<iostream.h>
+#include <ctime>
 using namespace std;
 
 class shuffle_songs{
@@ -22,6 +23,7 @@ public:
         for(int i=0;i<number_of_songs;i++){
             pointer[i]=0;
         }
+        srand(time(0));
         size=number_of_songs;
         counter=0;
     }
@@ -30,6 +32,7 @@ public:
             cout<<pointer[i]<<" ";
         }cout<<endl;
     }
+    
     int next_song(){
         while(true){
             int rand_value=random()%size;
@@ -47,6 +50,9 @@ public:
             }
             
         }
+    }
+    void reducesize(){
+        counter--;
     }
 };
 

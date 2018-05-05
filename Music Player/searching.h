@@ -19,15 +19,8 @@ struct ids{
     }
 };
 
-
-
-
-
 class make_search_easy{
     private :
-    
-    
-    
     struct trie{
         //int idforsong; //to be used for song searching instead use head for ids as ids can be multiple
         int count;
@@ -263,7 +256,7 @@ class make_search_easy{
         for (int i=0;i<26;i++)display_thishead(head[i]);
         for(int i=0;i<10;i++)display_thishead(headnumber[i]);
     }
-    struct ids *delete_this_id_from_list(int unid,struct ids *head){
+    struct ids *delete_this_id_from_list(int unid,struct ids *head){ //sub program for delete_this_entry
         if(head!=NULL){
             if(head->current_id==unid){return head->next;}
             else {
@@ -285,7 +278,7 @@ class make_search_easy{
         }
         return NULL;
     }
-    void delete_this_entry(string t,int uni_id){ //recursion for deletion makes code easy to design
+    void delete_this_entry(string t,int uni_id){ //sub program for deletion_process
         if(t.length()>0){
             struct trie *headp=NULL;
             if(is_alpha(t[0]))
@@ -331,7 +324,7 @@ class make_search_easy{
           delete_this_entry(name.substr(i,name.length()),uni_id);
         }
     }
-    void change_id_in_this_list(struct ids *head,int oldid,int newid){
+    void change_id_in_this_list(struct ids *head,int oldid,int newid){ //sub program for change_this_id_to
         while(head){
             if(head->current_id==oldid){
                 head->current_id=newid;
@@ -340,7 +333,7 @@ class make_search_easy{
             head=head->next;
         }
     }
-    void change_this_id_to(string name,int oldid,int newid){ //for deletion and insertion into vacant places
+    void change_this_id_to(string name,int oldid,int newid){ //sub prog for changing__id_process and for deletion and insertion into vacant places
         char start=name[0];
         struct trie *headp=NULL;
         if(start>='a'&&start<='z')
@@ -348,7 +341,7 @@ class make_search_easy{
         else
             headp=headnumber[start-'0'];
         change_id_in_this_list(headp->head,oldid,newid);
-        for(int i=1;i<name.length();i++){
+        for(int i=1;i<name.length()&&headp!=NULL;i++){
             if(name[i]>='a'&&name[i]<='z')
                 headp=headp->next[name[i]-'a'];
             else
@@ -356,6 +349,12 @@ class make_search_easy{
             if(headp)change_id_in_this_list(headp->head,oldid,newid);
         }
         
+    }
+    void changing__id_process(string name,int oldid,int newid){
+        name=getparsed(name);
+        for(int i=0;i<name.length();i++){
+            change_this_id_to(name.substr(i,name.length()),oldid,newid);
+        }
     }
 };
 
