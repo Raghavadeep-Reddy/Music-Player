@@ -27,15 +27,18 @@ using namespace std;
 
 class songs{
     private:
-        struct song *head,*tail;
+    struct song *head,*tail;
         //struct song *songshash[50]={NULL}; // 50 * 50 max no of songs
-        int counterforkey=-1;
+    int counterforkey;
+    int actual_songs;
     
     public:
-     make_search_easy search_song,search_artist;
+    make_search_easy search_song,search_artist;
     hash_table address_hashing;
         songs(){
+            counterforkey=-1;
             tail=head=NULL;
+            actual_songs=0;
         }
         void insert(string name,string artist){
             struct song *t=new song(name,artist,++counterforkey);
@@ -54,6 +57,8 @@ class songs{
             }
         }
     void delete_this_pointer(struct song *song_detail){ // it will replace last song with current
+        /*
+         This code will shift last song to deleted postion so as to reduce any other complexity
         struct song *last=tail;
         if(tail!=song_detail){
             tail=tail->prev;
@@ -69,6 +74,28 @@ class songs{
             int old_id=last->songid;
             search_song.changing__id_process(song_detail->name,old_id,new_id);
             counterforkey--;
+        }*/
+        //next code will actually delete song and the postion will be left vacant for that id
+        //this will also edit the main file and delete required song from there
+        if(song_detail!=NULL){
+            struct song *back=song_detail->prev;
+            struct song *next_one=song_detail->next;
+            if(back!=NULL){
+                back->next=next_one;
+                if(next_one!=NULL){
+                    next_one->prev=back;
+                }
+            }
+            if(song_detail==head){
+                head=next_one;
+            }
+            if(song_detail==tail){
+                tail=back;
+            }
+            actual_songs--;
+            address_hashing.delete_this_postion_from_hash(song_detail->songid);
+            search_song.deletion_process( song_detail->name, song_detail->songid);
+            search_artist.deletion_process( song_detail->artistname, song_detail->songid);
         }
     }
     void song_read_from_file(){

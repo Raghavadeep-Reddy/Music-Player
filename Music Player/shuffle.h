@@ -11,7 +11,7 @@
 #include<iostream.h>
 #include <ctime>
 using namespace std;
-
+// if song is deleted so shuffle will be informed that song is not availble in library now
 class shuffle_songs{
 private:
     int *pointer;

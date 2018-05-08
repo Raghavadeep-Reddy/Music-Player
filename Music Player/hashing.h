@@ -31,11 +31,12 @@ struct song {
 };
 class hash_table{
 private :
+    int size_for_hash=5;
     song  *address[50]={NULL} ; //it can handle 500 * 50 songs = 25000 songs
 public:
     void insert(struct song *song_address){
-        if(song_address->songid%5==0){
-            address[song_address->songid/5]=song_address;
+        if((song_address->songid)%size_for_hash==0){
+            address[(song_address->songid)/size_for_hash]=song_address;
         }
     }
     struct song * get_address_song(int song_id){
@@ -46,10 +47,10 @@ public:
         // if address = 0, 50, 100 the retrival time will be O(1)
         // overall complexity will be approx. O(log n)
         int get_min,get_max;
-        get_min=song_id/5;
-        get_max=song_id/5 +1;
-        if(song_id%5==0){
-            return address[song_id/5];
+        get_min=song_id/size_for_hash;
+        get_max=song_id/size_for_hash +1;
+        if(song_id%size_for_hash==0){
+            return address[song_id/size_for_hash];
         }else{ // now go for travesal approach
             struct song *end;
             if(address[get_max]!=NULL && (address[get_max]->songid-song_id)<(song_id - address[get_min]->songid)){//go for travesal from back else start will be exexuted
@@ -76,8 +77,14 @@ public:
         }cout<<endl;
     }
     void delete_this_id(int song_id){
-        if(song_id%5==0){
-            address[song_id/5]=NULL;
+        if(song_id%size_for_hash==0){
+            address[song_id/size_for_hash]=NULL;
+        }
+    }
+    void delete_this_postion_from_hash(int uni_id){
+        if(uni_id%size_for_hash == 0){
+            if(address[uni_id/size_for_hash]!=NULL) //it will point to next pointer
+                address[uni_id/size_for_hash]=address[uni_id/size_for_hash]->next;
         }
     }
 };
