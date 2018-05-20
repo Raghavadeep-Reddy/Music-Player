@@ -12,10 +12,11 @@
 using namespace std;
 struct ids{
     int current_id;
-    struct ids *next;
+    struct ids *next,*prev;
     ids(int idd){
         this->current_id=idd;
         this->next=NULL;
+        this->prev=NULL;
     }
 };
 
@@ -144,13 +145,14 @@ class make_search_easy{
     
     void insert(string t,int key){   //to be called for insertion purpose //MAIN INSERT Function
         if(t.length()>0){
+            
             string nonspaced="";
             for(int i=0;i<t.length();i++){
                 if((t[i]>='a'&&t[i]<='z')||(t[i]>='1'&&t[i]<='9'))nonspaced=nonspaced+t[i];
             }
             for(int i=0;i<nonspaced.length();i++){
                 //cout<<i<<" "<<nonspaced.substr(i,nonspaced.length())<<endl;
-                insertt(nonspaced.substr(i,nonspaced.length()), key);
+                if(nonspaced.substr(i,nonspaced.length()).length()>0)insertt(nonspaced.substr(i,nonspaced.length()), key);
             }
         }
     }
@@ -195,9 +197,11 @@ class make_search_easy{
                     index++;
                     //temp=temp->next[t[index]-'a'];
                 }
-                cout<<"Showing results for : \""<<t.substr(0,index)<<"\""<<endl;
-                if(temp)return temp->head;
-                return last->head;
+                if(t.substr(0,index).length()>0){
+                    cout<<"Showing results for : \""<<t.substr(0,index)<<"\""<<endl;
+                    if(temp)return temp->head;
+                    return last->head;
+                }
             }else{
                 if(headnumber[start-'0']!=NULL){
                     struct trie *temp=headnumber[start-'0'],*last;
@@ -216,9 +220,11 @@ class make_search_easy{
                         index++;
                         
                     }
-                    cout<<"Showing results for : \""<<t.substr(0,index)<<"\""<<endl;
-                    if(temp)return temp->head;
-                    return last->head;
+                    if(t.substr(0,index).length()>0){
+                        cout<<"Showing results for : \""<<t.substr(0,index)<<"\""<<endl;
+                        if(temp)return temp->head;
+                        return last->head;
+                    }
                 }
             }
         }
@@ -357,6 +363,14 @@ class make_search_easy{
         }
     }
 };
-
+/*
+ for creating object of trie just write
+ make_search_easy mytrie;
+ mytrie.insert(string , key associated with the string);
+ for search purpose
+ struct ids *head=mytrie.search_for_this_string(string to be searched);
+ for deleting in tries : mytrie.deletion_process( name to be deleted ,  uni_id associated with that string )
+ for changing the id of song : mytrie.changing__id_process(name,oldid,newid to be assigned);
+ */
 
 #endif /* searching_h */

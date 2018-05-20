@@ -10,6 +10,11 @@ using namespace std;
 #include "songs.h"
 
 int main(int argc, const char * argv[]) {
+    Music_Player obj;
+    while(true){
+        obj.ask_for_options();
+    }
+    /*
     songs obj;
     obj.song_read_from_file();
     obj.display_all_songs();
@@ -56,9 +61,11 @@ int main(int argc, const char * argv[]) {
             cin>>song_no;
             obj.delete_this_pointer(obj.song_address(song_no));
             obj.display_all_songs();
-        }else{
+        }else if(choice==6){
             obj.address_hashing.show_hash_table();
+        }else{
+            obj.play_with_playlist();//this will shift the program to playlist object
         }
-    }
+    }*/
     return 0;
 }
